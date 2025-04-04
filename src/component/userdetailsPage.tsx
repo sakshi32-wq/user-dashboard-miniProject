@@ -1,4 +1,4 @@
-import { Card, Text, Title, Container, Group, Box, Divider, Paper, Stack, Flex } from '@mantine/core';
+import { Card, Text, Title, Container, Box, Divider,Stack, Flex } from '@mantine/core';
 import { useParams } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';
 import { fetchUsers } from '../api/api'; 
@@ -45,7 +45,6 @@ export default function UserDetailsPage() {
     fontSize:"30px",  
     marginTop:"50px"   
   }}>User Details</Title>
-  
 <Box
   style={{
     display: 'flex',
@@ -80,40 +79,40 @@ export default function UserDetailsPage() {
 
         <Divider my="xs" color="blue" />
 
-       <Card style={{fontSize:24, textAlign:"center"} } >
-            <Flex>
-              <Text ta="center" fw={600}   style={{fontSize:24}}>
+       <Card style={{textAlign:"center", backgroundColor:"#d0bfff"} } >
+            <Flex gap={10} >
+              <Text  fw={600} style={{fontSize:"22px"}}>
                 Email:
               </Text>
-              <Text ta="center" style={{fontSize:24}}>{user.email}</Text>
+              <Text  style={{fontSize:"22px"}}>{user.email}</Text>
             </Flex>
 
-            <Flex>
-              <Text fw={600}  >
+            <Flex gap={10}>
+              <Text fw={600} style={{fontSize:"22px"}} >
                 Phone:
               </Text>
-              <Text >{user.phone}</Text>
+              <Text style={{fontSize:"22px"}}>{user.phone}</Text>
             </Flex>
 
-            <Flex>
-              <Text  fw={600}  w={100}>
+            <Flex gap={10}>
+              <Text style={{fontSize:"22px"}} fw={600}  >
                 Website:
               </Text>
-              <Text >{user.website}</Text>
+              <Text style={{fontSize:"22px"}} >{user.website}</Text>
             </Flex>
 
-            <Flex>
-              <Text fw={600}  >
+            <Flex gap={10}>
+              <Text fw={600} style={{fontSize:"22px"}} >
                 Company:
               </Text>
-              <Text >{user.company?.name}</Text>
+              <Text style={{fontSize:"22px"}} >{user.company?.name}</Text>
             </Flex>
 
-            <Flex>
-              <Text  fw={600}>
+            <Flex gap={10}>
+              <Text style={{fontSize:"22px"}} fw={600}>
                 Address:
               </Text>
-              <Text >
+              <Text style={{fontSize:"22px"}} >
                 {user.address?.suite}, {user.address?.street},
                 {user.address?.city} , {user.address?.zipcode}
               </Text>

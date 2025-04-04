@@ -7,6 +7,7 @@ import {
     TextInput,
     Card,
     Stack,
+    Skeleton,
     
   } from '@mantine/core';
   import { useQuery } from '@tanstack/react-query';
@@ -15,7 +16,7 @@ import {
   import { useEffect, useState } from 'react';
   import type { User } from '../api/api'; 
   
-  export default function HomePage() {
+  export default function UsersPage() {
     const { data = [],isLoading, isError} = useQuery<User[]>({
       queryKey: ['users'],
       queryFn: fetchUsers,
@@ -48,49 +49,38 @@ import {
 
       const paginated = filtered.slice((page - 1) * page_size, page * page_size);
 
-      if (isLoading) return <Container    style={{
+      if (isLoading) return    <>
+      
+      <Skeleton height={50} circle mb="xl" />
+      <Skeleton height={8} radius="xl" />
+      <Skeleton height={8} mt={6} radius="xl" />
+      <Skeleton height={8} mt={6} width="70%" radius="xl" />
+    </>
+      if (isError) return <Container style={{
+        color:"red",
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         textAlign: 'center',
         fontWeight:"bold",
         fontSize:"24px"
-      }}>Loading...</Container>;
-      
-      if (isError)
-        return (
-          <Container
-            style={{
-              color: 'red',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              textAlign: 'center',
-              fontWeight:"bold",
-              fontSize:"24px"
-            }}
-          >
-            Error loading user details.
-          </Container>
-        );
-      
+      }}>Error loading user details.</Container>;
+
   
     return (
-        <Container style={{width:"100%", display:'flex',
-            justifyContent:"center",
-            alignItems:"center" }}>
+        <Container size="lg" py="xl" px="md">
         <Card
+          shadow="lg"
+          padding="xl"
+          radius="xl"
+          withBorder
           style={{
-            backgroundColor: '#e5dbff',
+            backgroundColor: '#f3f0ff',
             borderColor: '#d0bfff',
             borderWidth: '2px',
             borderStyle: 'solid',
-            maxWidth: '900px',
-            height:700,
+            maxWidth: '1000px',
             margin: '0 auto',
-            width:"100%",
-            marginTop:100
-
           }}
         >
           <Stack gap="lg">
@@ -98,42 +88,43 @@ import {
               User List
             </Title>
       
-            <Box style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-          <TextInput
+            <Box style={{ display: 'flex', justifyContent: 'center' }}>
+              <TextInput
                 placeholder="Search by name"
                 value={input}
-                 onChange={handleInputChange}
-                 w="100%"
-                  style={{ maxWidth: 400 }}
-             />
+                onChange={handleInputChange}
+                w="100%"
+                style={{ maxWidth: 600}}
+              />
             </Box>
-
       
             <Box
               style={{
                 width: '100%',
-                maxWidth: 800,
-                margin: '40px auto', 
-                padding: '0 16px'
               }}
             >
               <Table
+                highlightOnHover
+                striped
+                withColumnBorders
                 style={{
                   width: '100%',
                   minWidth: 600,
-                  height:400,
+                  height:200,
                   tableLayout: 'fixed',
+                  borderCollapse: 'collapse',
                   border: '2px solid #d0bfff',
                 }}
               >
-                <Table.Thead style={{ backgroundColor: '#d0bfff' }}>
+                <Table.Thead style={{ backgroundColor: '#e5dbff' }}>
                   <Table.Tr>
                     <Table.Th
                       style={{
                         color: '#3b2f63',
-                        fontSize: '24px',
+                        fontSize: '22px',
                         textAlign: 'left',
                         paddingLeft: '12px',
+                        fontWeight:600
                       }}
                     >
                       Name
@@ -141,9 +132,11 @@ import {
                     <Table.Th
                       style={{
                         color: '#3b2f63',
-                        fontSize: '24px',
+                        fontSize: '22px',
                         textAlign: 'left',
                         paddingLeft: '12px',
+                        fontWeight:600
+
                       }}
                     >
                       Email
@@ -155,7 +148,7 @@ import {
                     <Table.Tr
                       key={user.id}
                       onClick={() => handleClick(user.id)}
-                      style={{ cursor: 'pointer',fontSize:"24px" }}
+                      style={{ cursor: 'pointer' ,fontSize:"20px"}}
                     >
                       <Table.Td style={{ textAlign: 'left', paddingLeft: '12px' }}>
                         {user.name}

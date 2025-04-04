@@ -6,6 +6,7 @@ import { MantineProvider } from '@mantine/core';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 // Import the generated route tree
 import { routeTree } from './routeTree.gen'
+import '@mantine/core/styles.css';
 
 // Create a new router instance
 const router = createRouter({ routeTree })
