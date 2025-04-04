@@ -1,10 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router'
+import UserDetailsPage from '../../component/userdetailsPage';
 
 export const Route = createFileRoute('/user/$id')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  const { id } = Route.useParams();
-  return <div>User ID: {id}</div>;
+  return <UserDetailsPage/>
 }
