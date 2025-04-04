@@ -15,7 +15,7 @@ import {
   import { useEffect, useState } from 'react';
   import type { User } from '../api/api'; 
   
-  export default function UsersPage() {
+  export default function HomePage() {
     const { data = [],isLoading, isError} = useQuery<User[]>({
       queryKey: ['users'],
       queryFn: fetchUsers,
