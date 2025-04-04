@@ -10,7 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@mantine/core": "^7.17.3",
+    "@mantine/hooks": "^7.17.3",
+    "@tabler/icons-react": "^3.31.0",
+    "@tanstack/react-query": "^5.71.5",
     "@tanstack/react-router": "^1.114.34",
+    "axios": "^1.8.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
