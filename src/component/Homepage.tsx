@@ -157,10 +157,9 @@ export default function HomePage() {
                     style={{
                       color: "#3b2f63",
                       fontSize: "22px",
-                      textAlign: "left",
+                      textAlign: "center",
                       paddingLeft: "12px",
                       fontWeight: 600,
-                      minWidth: 200,
                     }}
                   >
                     Name
@@ -169,10 +168,9 @@ export default function HomePage() {
                     style={{
                       color: "#3b2f63",
                       fontSize: "22px",
-                      textAlign: "left",
+                      textAlign: "center",
                       paddingLeft: "12px",
                       fontWeight: 600,
-                      minWidth: 200,
                     }}
                   >
                     Email
@@ -181,10 +179,9 @@ export default function HomePage() {
                     style={{
                       color: "#3b2f63",
                       fontSize: "22px",
-                      textAlign: "left",
+                      textAlign: "center",
                       paddingLeft: "12px",
                       fontWeight: 600,
-                      minWidth: 100,
                     }}
                   >
                     Actions
@@ -204,19 +201,30 @@ export default function HomePage() {
 
                       handleClick(user?.id);
                     }}
-                    style={{ cursor: "pointer", fontSize: "20px" }}
+                    style={{
+                      cursor: "pointer",
+                      fontSize: "20px",
+                    }}
                   >
                     <Table.Td
-                      style={{ textAlign: "left", paddingLeft: "12px" }}
+                      style={{
+                        textAlign: "center",
+                      }}
                     >
                       {user?.name}
                     </Table.Td>
                     <Table.Td
-                      style={{ textAlign: "left", paddingLeft: "12px" }}
+                      style={{
+                        textAlign: "center",
+                      }}
                     >
                       {user?.email}
                     </Table.Td>
-                    <Table.Td style={{ paddingLeft: "12px" }}>
+                    <Table.Td
+                      style={{
+                        textAlign: "center",
+                      }}
+                    >
                       <Menu
                         position="bottom-end"
                         withArrow

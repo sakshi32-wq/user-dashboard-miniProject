@@ -115,6 +115,12 @@ export default function UserDetailsPage() {
             <Card style={{ textAlign: "center", backgroundColor: "#d0bfff" }}>
               <Flex gap={10} wrap="wrap">
                 <Text fw={600} style={{ fontSize: "22px" }}>
+                  Username:
+                </Text>
+                <Text style={{ fontSize: "22px" }}>{user?.username}</Text>
+              </Flex>
+              <Flex gap={10} wrap="wrap">
+                <Text fw={600} style={{ fontSize: "22px" }}>
                   Email:
                 </Text>
                 <Text style={{ fontSize: "22px" }}>{user?.email}</Text>
@@ -134,15 +140,43 @@ export default function UserDetailsPage() {
                 <Text style={{ fontSize: "22px" }}>{user?.website}</Text>
               </Flex>
 
+              <Text
+                fw={600}
+                style={{
+                  fontSize: "22px",
+                  textAlign: "left",
+                  textDecoration: "underline",
+                }}
+              >
+                Company:
+              </Text>
               <Flex gap={10} wrap="wrap">
-                <Text fw={600} style={{ fontSize: "22px" }}>
-                  Company:
+                <Text fw={600} style={{ fontSize: "20px" }}>
+                  Name:
                 </Text>
                 <Text style={{ fontSize: "22px" }}>{user?.company?.name}</Text>
               </Flex>
+              <Flex gap={10} wrap="wrap">
+                <Text fw={600} style={{ fontSize: "20px" }}>
+                  Catch Phrase:
+                </Text>
+                <Text style={{ fontSize: "22px" }}>
+                  {user?.company?.catchPhrase}
+                </Text>
+              </Flex>
+
+              <Flex gap={10} wrap="wrap">
+                <Text fw={600} style={{ fontSize: "20px" }}>
+                  Business:
+                </Text>
+                <Text style={{ fontSize: "22px" }}>{user?.company?.bs}</Text>
+              </Flex>
 
               <Flex gap={10}>
-                <Text style={{ fontSize: "22px" }} fw={600}>
+                <Text
+                  style={{ fontSize: "22px", textDecoration: "underline" }}
+                  fw={600}
+                >
                   Address:
                 </Text>
                 <Text style={{ fontSize: "22px" }}>
