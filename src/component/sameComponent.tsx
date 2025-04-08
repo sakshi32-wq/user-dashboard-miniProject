@@ -1,7 +1,7 @@
 import { Modal, TextInput, Button, Stack, Group, Text } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import type { User } from "../api/api";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface UserModalProps {
   opened: boolean;
@@ -74,6 +74,27 @@ export default function SameComponent({
       return errors;
     },
   });
+  const [timer, setTimer] = useState(0);
+
+  useEffect(() => {
+    let interval: number;
+
+    if (opened) {
+      setTimer(0);
+      interval = window.setInterval(() => {
+        setTimer((prev: number) => prev + 1);
+      }, 1000);
+    }
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [opened]);
+
+  const minutes = Math.floor(timer / 60)
+    .toString()
+    .padStart(2, "0");
+  const seconds = (timer % 60).toString().padStart(2, "0");
 
   useEffect(() => {
     if (mode === "edit" && initialData) {
@@ -87,14 +108,27 @@ export default function SameComponent({
     <Modal
       opened={opened}
       onClose={onClose}
-      title={mode === "add" ? "Add User" : "Edit User"}
+      title={
+        <Group gap="xs" align="center">
+          <Text
+            style={{
+              color: "#ae3ec9",
+              fontWeight: 700,
+              fontSize: "24px",
+            }}
+          >
+            {mode === "add" ? "Add User" : "Edit User"}
+          </Text>
+          <Text c="dimmed" fz="lg" mt={4} fw={700}>
+            ({minutes}:{seconds})
+          </Text>
+        </Group>
+      }
       styles={{
         title: {
-          color: "#ae3ec9",
-          fontWeight: 700,
-          textAlign: "center",
+          display: "flex",
+          justifyContent: "center",
           width: "100%",
-          fontSize: "24px",
         },
         header: {
           justifyContent: "center",

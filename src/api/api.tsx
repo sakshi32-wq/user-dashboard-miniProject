@@ -24,9 +24,40 @@ export interface User {
   };
 }
 
+const api = axios.create({
+  baseURL: "https://jsonplaceholder.typicode.com",
+});
+
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("access_token");
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    console.log("Request:", config);
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+api.interceptors.response.use(
+  (response) => {
+    console.log("Response:", response);
+    return response;
+  },
+  (error) => {
+    console.error("API Error:", error);
+    return Promise.reject(error);
+  }
+);
+
+export default api;
+
 export const fetchUsers = async (): Promise<User[]> => {
-  const response = await axios.get<User[]>(
-    "https://jsonplaceholder.typicode.com/users"
-  );
-  return response.data;
+  const { data } = await api.get("/users");
+  return data;
 };
