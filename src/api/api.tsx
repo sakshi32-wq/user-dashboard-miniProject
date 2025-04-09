@@ -24,19 +24,19 @@ export interface User {
   };
 }
 
-const api = axios.create({
+const instance = axios.create({
   baseURL: "https://jsonplaceholder.typicode.com",
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
-api.interceptors.request.use(
+instance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("access_token");
+    const token = "hardcoded-token";
+    config.headers.Authorization = `Bearer ${token}`;
+    console.log("token :", token);
 
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-
-    console.log("Request:", config);
     return config;
   },
   (error) => {
@@ -44,9 +44,8 @@ api.interceptors.request.use(
   }
 );
 
-api.interceptors.response.use(
+instance.interceptors.response.use(
   (response) => {
-    console.log("Response:", response);
     return response;
   },
   (error) => {
@@ -55,9 +54,9 @@ api.interceptors.response.use(
   }
 );
 
-export default api;
+export default instance;
 
 export const fetchUsers = async (): Promise<User[]> => {
-  const { data } = await api.get("/users");
+  const { data } = await instance.get("/users");
   return data;
 };
