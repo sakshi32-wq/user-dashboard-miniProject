@@ -2,7 +2,6 @@ import {
   Table,
   Container,
   Title,
-  Pagination,
   Box,
   TextInput,
   Card,
@@ -13,7 +12,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { fetchUsers } from "../api/api";
 import { useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { User } from "../api/api";
 import { useDebouncedValue } from "@mantine/hooks";
 import { IconSearch } from "@tabler/icons-react";
@@ -33,13 +32,12 @@ export default function HomePage() {
 
   const PAGE_SIZE = 5;
   const [input, setInput] = useState("");
-  const [page, setPage] = useState(1);
   const navigate = useNavigate();
   const [debounce] = useDebouncedValue(input, 1000);
   const [modalOpened, setModalOpened] = useState(false);
   const [modalMode, setModalMode] = useState<"add" | "edit">("add");
   const [selectedUser, setSelectedUser] = useState<User | undefined>();
-
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const openAddModal = () => {
     setSelectedUser(undefined);
     setModalMode("add");
@@ -61,6 +59,7 @@ export default function HomePage() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
+    setVisibleCount(5);
   };
   const handleClick = (id?: number) => {
     if (id != null) {
@@ -71,8 +70,28 @@ export default function HomePage() {
     user?.name?.toLowerCase().includes(debounce.toLowerCase())
   );
 
-  const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const visibleUsers = filtered.slice(0, visibleCount);
+  const loaderRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        if (entry.isIntersecting && visibleCount < filtered.length) {
+          console.log(" Loading more users...");
+          setVisibleCount((prev) => prev + PAGE_SIZE);
+        }
+      },
+      { root: null, rootMargin: "0px", threshold: 1.0 }
+    );
 
+    if (loaderRef.current) {
+      observer.observe(loaderRef.current);
+    }
+
+    return () => {
+      if (loaderRef.current) observer.unobserve(loaderRef.current);
+    };
+  }, [loaderRef.current, filtered.length, visibleCount]);
   if (isLoading)
     return (
       <>
@@ -189,16 +208,12 @@ export default function HomePage() {
                 </Table.Tr>
               </Table.Thead>
               <Table.Tbody>
-                {paginated.map((user) => (
+                {visibleUsers.map((user) => (
                   <Table.Tr
                     key={user?.id}
                     onClick={(e) => {
                       const target = e.target as HTMLElement;
-
-                      if (target.closest("[data-ignore-row-click]")) {
-                        return;
-                      }
-
+                      if (target.closest("[data-ignore-row-click]")) return;
                       handleClick(user?.id);
                     }}
                     style={{
@@ -268,16 +283,11 @@ export default function HomePage() {
                 Add User
               </Button>
             </Box>
-          </Box>
 
-          <Box mt="md" style={{ display: "flex", justifyContent: "center" }}>
-            <Pagination
-              total={Math.ceil(filtered.length / PAGE_SIZE)}
-              value={page}
-              onChange={setPage}
-              radius="xl"
-              color="grape"
-            />
+            <div ref={loaderRef} style={{ height: 1 }} />
+            {visibleCount < filtered.length && (
+              <Skeleton height={40} mt="lg" radius="xl" animate />
+            )}
           </Box>
         </Stack>
       </Card>
