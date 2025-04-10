@@ -11,10 +11,45 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as SignupImport } from './routes/signup'
+import { Route as SignInImport } from './routes/signIn'
+import { Route as OtpImport } from './routes/otp'
+import { Route as HomePageImport } from './routes/homePage'
+import { Route as ForgotPasswordImport } from './routes/forgotPassword'
 import { Route as IndexImport } from './routes/index'
 import { Route as UserIdImport } from './routes/user/$id'
 
 // Create/Update Routes
+
+const SignupRoute = SignupImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const SignInRoute = SignInImport.update({
+  id: '/signIn',
+  path: '/signIn',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const OtpRoute = OtpImport.update({
+  id: '/otp',
+  path: '/otp',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const HomePageRoute = HomePageImport.update({
+  id: '/homePage',
+  path: '/homePage',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ForgotPasswordRoute = ForgotPasswordImport.update({
+  id: '/forgotPassword',
+  path: '/forgotPassword',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
@@ -39,6 +74,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/forgotPassword': {
+      id: '/forgotPassword'
+      path: '/forgotPassword'
+      fullPath: '/forgotPassword'
+      preLoaderRoute: typeof ForgotPasswordImport
+      parentRoute: typeof rootRoute
+    }
+    '/homePage': {
+      id: '/homePage'
+      path: '/homePage'
+      fullPath: '/homePage'
+      preLoaderRoute: typeof HomePageImport
+      parentRoute: typeof rootRoute
+    }
+    '/otp': {
+      id: '/otp'
+      path: '/otp'
+      fullPath: '/otp'
+      preLoaderRoute: typeof OtpImport
+      parentRoute: typeof rootRoute
+    }
+    '/signIn': {
+      id: '/signIn'
+      path: '/signIn'
+      fullPath: '/signIn'
+      preLoaderRoute: typeof SignInImport
+      parentRoute: typeof rootRoute
+    }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupImport
+      parentRoute: typeof rootRoute
+    }
     '/user/$id': {
       id: '/user/$id'
       path: '/user/$id'
@@ -53,36 +123,83 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/forgotPassword': typeof ForgotPasswordRoute
+  '/homePage': typeof HomePageRoute
+  '/otp': typeof OtpRoute
+  '/signIn': typeof SignInRoute
+  '/signup': typeof SignupRoute
   '/user/$id': typeof UserIdRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/forgotPassword': typeof ForgotPasswordRoute
+  '/homePage': typeof HomePageRoute
+  '/otp': typeof OtpRoute
+  '/signIn': typeof SignInRoute
+  '/signup': typeof SignupRoute
   '/user/$id': typeof UserIdRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/forgotPassword': typeof ForgotPasswordRoute
+  '/homePage': typeof HomePageRoute
+  '/otp': typeof OtpRoute
+  '/signIn': typeof SignInRoute
+  '/signup': typeof SignupRoute
   '/user/$id': typeof UserIdRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/user/$id'
+  fullPaths:
+    | '/'
+    | '/forgotPassword'
+    | '/homePage'
+    | '/otp'
+    | '/signIn'
+    | '/signup'
+    | '/user/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/user/$id'
-  id: '__root__' | '/' | '/user/$id'
+  to:
+    | '/'
+    | '/forgotPassword'
+    | '/homePage'
+    | '/otp'
+    | '/signIn'
+    | '/signup'
+    | '/user/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/forgotPassword'
+    | '/homePage'
+    | '/otp'
+    | '/signIn'
+    | '/signup'
+    | '/user/$id'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ForgotPasswordRoute: typeof ForgotPasswordRoute
+  HomePageRoute: typeof HomePageRoute
+  OtpRoute: typeof OtpRoute
+  SignInRoute: typeof SignInRoute
+  SignupRoute: typeof SignupRoute
   UserIdRoute: typeof UserIdRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ForgotPasswordRoute: ForgotPasswordRoute,
+  HomePageRoute: HomePageRoute,
+  OtpRoute: OtpRoute,
+  SignInRoute: SignInRoute,
+  SignupRoute: SignupRoute,
   UserIdRoute: UserIdRoute,
 }
 
@@ -97,11 +214,31 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/forgotPassword",
+        "/homePage",
+        "/otp",
+        "/signIn",
+        "/signup",
         "/user/$id"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/forgotPassword": {
+      "filePath": "forgotPassword.tsx"
+    },
+    "/homePage": {
+      "filePath": "homePage.tsx"
+    },
+    "/otp": {
+      "filePath": "otp.tsx"
+    },
+    "/signIn": {
+      "filePath": "signIn.tsx"
+    },
+    "/signup": {
+      "filePath": "signup.tsx"
     },
     "/user/$id": {
       "filePath": "user/$id.tsx"
