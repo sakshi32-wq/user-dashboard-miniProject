@@ -13,6 +13,7 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as SignupImport } from './routes/signup'
 import { Route as SignInImport } from './routes/signIn'
+import { Route as ResetPasswordImport } from './routes/resetPassword'
 import { Route as OtpImport } from './routes/otp'
 import { Route as HomePageImport } from './routes/homePage'
 import { Route as ForgotPasswordImport } from './routes/forgotPassword'
@@ -30,6 +31,12 @@ const SignupRoute = SignupImport.update({
 const SignInRoute = SignInImport.update({
   id: '/signIn',
   path: '/signIn',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ResetPasswordRoute = ResetPasswordImport.update({
+  id: '/resetPassword',
+  path: '/resetPassword',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -95,6 +102,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OtpImport
       parentRoute: typeof rootRoute
     }
+    '/resetPassword': {
+      id: '/resetPassword'
+      path: '/resetPassword'
+      fullPath: '/resetPassword'
+      preLoaderRoute: typeof ResetPasswordImport
+      parentRoute: typeof rootRoute
+    }
     '/signIn': {
       id: '/signIn'
       path: '/signIn'
@@ -126,6 +140,7 @@ export interface FileRoutesByFullPath {
   '/forgotPassword': typeof ForgotPasswordRoute
   '/homePage': typeof HomePageRoute
   '/otp': typeof OtpRoute
+  '/resetPassword': typeof ResetPasswordRoute
   '/signIn': typeof SignInRoute
   '/signup': typeof SignupRoute
   '/user/$id': typeof UserIdRoute
@@ -136,6 +151,7 @@ export interface FileRoutesByTo {
   '/forgotPassword': typeof ForgotPasswordRoute
   '/homePage': typeof HomePageRoute
   '/otp': typeof OtpRoute
+  '/resetPassword': typeof ResetPasswordRoute
   '/signIn': typeof SignInRoute
   '/signup': typeof SignupRoute
   '/user/$id': typeof UserIdRoute
@@ -147,6 +163,7 @@ export interface FileRoutesById {
   '/forgotPassword': typeof ForgotPasswordRoute
   '/homePage': typeof HomePageRoute
   '/otp': typeof OtpRoute
+  '/resetPassword': typeof ResetPasswordRoute
   '/signIn': typeof SignInRoute
   '/signup': typeof SignupRoute
   '/user/$id': typeof UserIdRoute
@@ -159,6 +176,7 @@ export interface FileRouteTypes {
     | '/forgotPassword'
     | '/homePage'
     | '/otp'
+    | '/resetPassword'
     | '/signIn'
     | '/signup'
     | '/user/$id'
@@ -168,6 +186,7 @@ export interface FileRouteTypes {
     | '/forgotPassword'
     | '/homePage'
     | '/otp'
+    | '/resetPassword'
     | '/signIn'
     | '/signup'
     | '/user/$id'
@@ -177,6 +196,7 @@ export interface FileRouteTypes {
     | '/forgotPassword'
     | '/homePage'
     | '/otp'
+    | '/resetPassword'
     | '/signIn'
     | '/signup'
     | '/user/$id'
@@ -188,6 +208,7 @@ export interface RootRouteChildren {
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   HomePageRoute: typeof HomePageRoute
   OtpRoute: typeof OtpRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   SignInRoute: typeof SignInRoute
   SignupRoute: typeof SignupRoute
   UserIdRoute: typeof UserIdRoute
@@ -198,6 +219,7 @@ const rootRouteChildren: RootRouteChildren = {
   ForgotPasswordRoute: ForgotPasswordRoute,
   HomePageRoute: HomePageRoute,
   OtpRoute: OtpRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   SignInRoute: SignInRoute,
   SignupRoute: SignupRoute,
   UserIdRoute: UserIdRoute,
@@ -217,6 +239,7 @@ export const routeTree = rootRoute
         "/forgotPassword",
         "/homePage",
         "/otp",
+        "/resetPassword",
         "/signIn",
         "/signup",
         "/user/$id"
@@ -233,6 +256,9 @@ export const routeTree = rootRoute
     },
     "/otp": {
       "filePath": "otp.tsx"
+    },
+    "/resetPassword": {
+      "filePath": "resetPassword.tsx"
     },
     "/signIn": {
       "filePath": "signIn.tsx"

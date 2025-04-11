@@ -21,7 +21,7 @@ export default function ForgotPassword() {
     }
     console.log("Forgot Password for:", email);
     alert("Reset link sent!");
-    navigate({ to: "/signIn" });
+    navigate({ to: "/resetPassword" });
   };
 
   return (
@@ -78,7 +78,7 @@ export default function ForgotPassword() {
 
           <Box ta="center">
             <Text size="sm">
-              Remembered your password?{" "}
+              Go Back To
               <Text
                 span
                 style={{ color: "#5f3dc4", cursor: "pointer", fontWeight: 500 }}
