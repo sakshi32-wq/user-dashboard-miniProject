@@ -66,7 +66,6 @@ export default function SetNewPasswordPage() {
             <PasswordInput
               label="New Password"
               placeholder="Enter new password"
-              required
               {...form.getInputProps("password")}
               styles={{ label: { color: "#5f3dc4", fontWeight: 600 } }}
             />
@@ -74,7 +73,6 @@ export default function SetNewPasswordPage() {
             <PasswordInput
               label="Confirm Password"
               placeholder="Confirm new password"
-              required
               {...form.getInputProps("confirmPassword")}
               styles={{ label: { color: "#5f3dc4", fontWeight: 600 } }}
             />

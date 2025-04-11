@@ -9,25 +9,29 @@ import {
   Title,
 } from "@mantine/core";
 import { useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useForm } from "@mantine/form";
 
 export default function SignIn() {
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
-  });
   const navigate = useNavigate();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+  const form = useForm({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+
+    validate: {
+      email: (value) =>
+        /^\S+@\S+\.\S+$/.test(value) ? null : "Invalid email address",
+      password: (value) =>
+        value.trim().length === 0 ? "Password is required" : null,
+    },
+  });
 
   const handleSubmit = () => {
-    if (!form.email || !form.password) {
-      alert("Please fill out all fields.");
-      return;
-    }
-    console.log("Sign In Data:", form);
+    if (form.validate().hasErrors) return;
+
+    console.log("Sign In Data:", form.values);
     alert("Sign in successful!");
     navigate({ to: "/homePage" });
   };
@@ -56,72 +60,77 @@ export default function SignIn() {
           height: 500,
         }}
       >
-        <Stack>
-          <Title ta="center" style={{ color: "#5f3dc4" }}>
-            Welcome Back
-          </Title>
-          <Title ta="center" style={{ color: "#5f3dc4" }}>
-            Sign In
-          </Title>
+        <form onSubmit={form.onSubmit(handleSubmit)}>
+          <Stack>
+            <Title ta="center" style={{ color: "#5f3dc4" }}>
+              Welcome Back
+            </Title>
+            <Title ta="center" style={{ color: "#5f3dc4" }}>
+              Sign In
+            </Title>
 
-          <TextInput
-            label="Email"
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-            placeholder="Enter your email"
-            required
-            styles={{ label: { color: "#5f3dc4", fontWeight: 600 } }}
-          />
-          <PasswordInput
-            label="Password"
-            name="password"
-            value={form.password}
-            onChange={handleChange}
-            placeholder="Enter password"
-            required
-            styles={{ label: { color: "#5f3dc4", fontWeight: 600 } }}
-          />
+            <TextInput
+              label="Email"
+              placeholder="Enter your email"
+              {...form.getInputProps("email")}
+              styles={{ label: { color: "#5f3dc4", fontWeight: 600 } }}
+            />
 
-          <Button
-            fullWidth
-            radius="xl"
-            onClick={handleSubmit}
-            style={{
-              backgroundColor: "#5f3dc4",
-              color: "white",
-              fontWeight: 600,
-              marginTop: "20px",
-            }}
-          >
-            Sign In
-          </Button>
+            <PasswordInput
+              label="Password"
+              placeholder="Enter password"
+              {...form.getInputProps("password")}
+              styles={{ label: { color: "#5f3dc4", fontWeight: 600 } }}
+            />
 
-          <Box ta="center">
-            <Text size="sm">
-              <Text
-                span
-                style={{ color: "#5f3dc4", cursor: "pointer", fontWeight: 500 }}
-                onClick={() => (window.location.href = "/forgotPassword")}
-              >
-                Forgot Password?
+            <Button
+              type="submit"
+              fullWidth
+              radius="xl"
+              style={{
+                backgroundColor: "#5f3dc4",
+                color: "white",
+                fontWeight: 600,
+                marginTop: "20px",
+              }}
+            >
+              Sign In
+            </Button>
+
+            <Box ta="center">
+              <Text size="sm">
+                <Text
+                  span
+                  style={{
+                    color: "#5f3dc4",
+                    cursor: "pointer",
+                    fontWeight: 500,
+                  }}
+                  onClick={() => (window.location.href = "/forgotPassword")}
+                >
+                  Forgot Password?
+                </Text>
               </Text>
-            </Text>
-          </Box>
+            </Box>
 
-          <Box ta="center">
-            <Text size="sm">
-              Don't have an account?{" "}
-              <Text
-                span
-                style={{ color: "#5f3dc4", cursor: "pointer", fontWeight: 500 }}
-                onClick={() => (window.location.href = "/signUp")}
-              >
-                Sign Up
+            <Box ta="center">
+              <Text size="sm">
+                Don't have an account?{" "}
+                <Text
+                  span
+                  style={{
+                    color: "#5f3dc4",
+                    cursor: "pointer",
+                    fontWeight: 500,
+                  }}
+                  onClick={() => navigate({ to: "/signup" })}
+                >
+                  Sign Up
+                </Text>
               </Text>
-            </Text>
-          </Box>
-        </Stack>
+            </Box>
+          </Stack>
+        </form>
       </Card>
     </Box>
   );

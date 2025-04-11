@@ -8,18 +8,25 @@ import {
   Title,
 } from "@mantine/core";
 import { useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useForm } from "@mantine/form";
 
 export default function ForgotPassword() {
-  const [email, setEmail] = useState("");
   const navigate = useNavigate();
 
+  const form = useForm({
+    initialValues: {
+      email: "",
+    },
+    validate: {
+      email: (value) =>
+        /^\S+@\S+\.\S+$/.test(value) ? null : "Invalid email address",
+    },
+  });
+
   const handleSubmit = () => {
-    if (!email) {
-      alert("Please enter your email.");
-      return;
-    }
-    console.log("Forgot Password for:", email);
+    if (form.validate().hasErrors) return;
+
+    console.log("Forgot Password for:", form.values.email);
     alert("Reset link sent!");
     navigate({ to: "/resetPassword" });
   };
@@ -48,47 +55,52 @@ export default function ForgotPassword() {
           height: 300,
         }}
       >
-        <Stack>
-          <Title ta="center" style={{ color: "#5f3dc4" }}>
-            Forgot Password
-          </Title>
+        <form onSubmit={form.onSubmit(handleSubmit)}>
+          <Stack>
+            <Title ta="center" style={{ color: "#5f3dc4" }}>
+              Forgot Password
+            </Title>
 
-          <TextInput
-            label="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter your email"
-            required
-            styles={{ label: { color: "#5f3dc4", fontWeight: 600 } }}
-          />
+            <TextInput
+              label="Email"
+              placeholder="Enter your email"
+              required
+              {...form.getInputProps("email")}
+              styles={{ label: { color: "#5f3dc4", fontWeight: 600 } }}
+            />
 
-          <Button
-            fullWidth
-            radius="xl"
-            onClick={handleSubmit}
-            style={{
-              backgroundColor: "#5f3dc4",
-              color: "white",
-              fontWeight: 600,
-              marginTop: 10,
-            }}
-          >
-            Send Reset Link
-          </Button>
+            <Button
+              type="submit"
+              fullWidth
+              radius="xl"
+              style={{
+                backgroundColor: "#5f3dc4",
+                color: "white",
+                fontWeight: 600,
+                marginTop: 10,
+              }}
+            >
+              Send Reset Link
+            </Button>
 
-          <Box ta="center">
-            <Text size="sm">
-              Go Back To
-              <Text
-                span
-                style={{ color: "#5f3dc4", cursor: "pointer", fontWeight: 500 }}
-                onClick={() => (window.location.href = "/signIn")}
-              >
-                Sign In
+            <Box ta="center">
+              <Text size="sm">
+                Go Back To{" "}
+                <Text
+                  span
+                  style={{
+                    color: "#5f3dc4",
+                    cursor: "pointer",
+                    fontWeight: 500,
+                  }}
+                  onClick={() => (window.location.href = "/signIn")}
+                >
+                  Sign In
+                </Text>
               </Text>
-            </Text>
-          </Box>
-        </Stack>
+            </Box>
+          </Stack>
+        </form>
       </Card>
     </Box>
   );

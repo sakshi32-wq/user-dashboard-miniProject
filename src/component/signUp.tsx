@@ -9,37 +9,35 @@ import {
   Title,
 } from "@mantine/core";
 import { useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useForm } from "@mantine/form";
 
 export default function SignUp() {
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
   const navigate = useNavigate();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+  const form = useForm({
+    initialValues: {
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+
+    validate: {
+      name: (value) => (value.trim().length === 0 ? "Name is required" : null),
+      email: (value) =>
+        /^\S+@\S+\.\S+$/.test(value) ? null : "Invalid email address",
+      password: (value) =>
+        value.length < 6 ? "Password must be at least 6 characters" : null,
+      confirmPassword: (value, values) =>
+        value !== values.password ? "Passwords do not match" : null,
+    },
+  });
 
   const handleSubmit = () => {
-    if (!form.name || !form.email || !form.password || !form.confirmPassword) {
-      alert("Please fill out all fields.");
-      return;
-    }
-    if (form.password !== form.confirmPassword) {
-      alert("Passwords do not match.");
-      return;
-    }
-    navigate({ to: "/otp" });
-    console.log("Sign Up Data:", form);
+    if (form.validate().hasErrors) return;
+    console.log("Sign Up Data:", form.values);
     alert("Sign up successful!");
-  };
-
-  const handleSignInRedirect = () => {
-    navigate({ to: "/signIn" });
+    navigate({ to: "/otp" });
   };
 
   return (
@@ -65,78 +63,71 @@ export default function SignUp() {
           maxWidth: 500,
         }}
       >
-        <Stack>
-          <Title ta="center" style={{ color: "#5f3dc4" }}>
-            Create Account
-          </Title>
+        <form onSubmit={form.onSubmit(handleSubmit)}>
+          <Stack>
+            <Title ta="center" style={{ color: "#5f3dc4" }}>
+              Create Account
+            </Title>
 
-          <TextInput
-            label="Name"
-            name="name"
-            value={form.name}
-            onChange={handleChange}
-            placeholder="Enter your name"
-            required
-            styles={{ label: { color: "#5f3dc4", fontWeight: 600 } }}
-          />
-          <TextInput
-            label="Email"
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-            placeholder="Enter your email"
-            required
-            styles={{ label: { color: "#5f3dc4", fontWeight: 600 } }}
-          />
-          <PasswordInput
-            label="Password"
-            name="password"
-            value={form.password}
-            onChange={handleChange}
-            placeholder="Enter password"
-            required
-            styles={{ label: { color: "#5f3dc4", fontWeight: 600 } }}
-          />
-          <PasswordInput
-            label="Confirm Password"
-            name="confirmPassword"
-            value={form.confirmPassword}
-            onChange={handleChange}
-            placeholder="Confirm password"
-            required
-            styles={{ label: { color: "#5f3dc4", fontWeight: 600 } }}
-          />
+            <TextInput
+              label="Name"
+              placeholder="Enter your name"
+              {...form.getInputProps("name")}
+              styles={{ label: { color: "#5f3dc4", fontWeight: 600 } }}
+            />
 
-          <Button
-            fullWidth
-            radius="xl"
-            onClick={handleSubmit}
-            style={{
-              backgroundColor: "#5f3dc4",
-              color: "white",
-              fontWeight: 600,
-            }}
-          >
-            Sign Up
-          </Button>
+            <TextInput
+              label="Email"
+              placeholder="Enter your email"
+              {...form.getInputProps("email")}
+              styles={{ label: { color: "#5f3dc4", fontWeight: 600 } }}
+            />
 
-          <Box ta="center">
-            <Text size="sm">
-              Already have an account?{" "}
-              <Text
-                span
-                style={{
-                  color: "#5f3dc4",
-                  cursor: "pointer",
-                  fontWeight: 500,
-                }}
-                onClick={handleSignInRedirect}
-              >
-                Sign In
+            <PasswordInput
+              label="Password"
+              placeholder="Enter password"
+              {...form.getInputProps("password")}
+              styles={{ label: { color: "#5f3dc4", fontWeight: 600 } }}
+            />
+
+            <PasswordInput
+              label="Confirm Password"
+              placeholder="Confirm password"
+              {...form.getInputProps("confirmPassword")}
+              styles={{ label: { color: "#5f3dc4", fontWeight: 600 } }}
+            />
+
+            <Button
+              type="submit"
+              fullWidth
+              radius="xl"
+              style={{
+                backgroundColor: "#5f3dc4",
+                color: "white",
+                fontWeight: 600,
+              }}
+            >
+              Sign Up
+            </Button>
+
+            <Box ta="center">
+              <Text size="sm">
+                Already have an account?{" "}
+                <Text
+                  span
+                  style={{
+                    color: "#5f3dc4",
+                    cursor: "pointer",
+                    fontWeight: 500,
+                  }}
+                  onClick={() => navigate({ to: "/signIn" })}
+                >
+                  Sign In
+                </Text>
               </Text>
-            </Text>
-          </Box>
-        </Stack>
+            </Box>
+          </Stack>
+        </form>
       </Card>
     </Box>
   );

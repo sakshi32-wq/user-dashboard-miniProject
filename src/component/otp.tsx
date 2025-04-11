@@ -8,18 +8,25 @@ import {
   Title,
 } from "@mantine/core";
 import { useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useForm } from "@mantine/form";
 
 export default function TwoFA() {
-  const [code, setCode] = useState("");
   const navigate = useNavigate();
 
+  const form = useForm({
+    initialValues: {
+      code: "",
+    },
+    validate: {
+      code: (value) =>
+        /^\d{6}$/.test(value) ? null : "Please enter a valid 6-digit code",
+    },
+  });
+
   const handleSubmit = () => {
-    if (code.length !== 6) {
-      alert("Please enter a valid 6-digit code.");
-      return;
-    }
-    console.log("2FA Code:", code);
+    if (form.validate().hasErrors) return;
+
+    console.log("2FA Code:", form.values.code);
     alert("Two-factor authentication successful!");
     navigate({ to: "/signIn" });
   };
@@ -47,36 +54,37 @@ export default function TwoFA() {
           border: "2px solid #d0bfff",
         }}
       >
-        <Stack>
-          <Title ta="center" style={{ color: "#5f3dc4" }}>
-            Two-Factor Authentication
-          </Title>
-          <Text style={{ color: "#5f3dc4", fontWeight: 500 }}>
-            Enter the 6-digit code from your authenticator app or SMS.
-          </Text>
+        <form onSubmit={form.onSubmit(handleSubmit)}>
+          <Stack>
+            <Title ta="center" style={{ color: "#5f3dc4" }}>
+              Two-Factor Authentication
+            </Title>
 
-          <TextInput
-            label="Authentication Code"
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-            placeholder="123456"
-            required
-            styles={{ label: { color: "#5f3dc4", fontWeight: 600 } }}
-          />
+            <Text style={{ color: "#5f3dc4", fontWeight: 500 }}>
+              Enter the 6-digit code from your authenticator app or SMS.
+            </Text>
 
-          <Button
-            fullWidth
-            radius="xl"
-            onClick={handleSubmit}
-            style={{
-              backgroundColor: "#5f3dc4",
-              color: "white",
-              fontWeight: 600,
-            }}
-          >
-            Verify
-          </Button>
-        </Stack>
+            <TextInput
+              label="Authentication Code"
+              placeholder="123456"
+              {...form.getInputProps("code")}
+              styles={{ label: { color: "#5f3dc4", fontWeight: 600 } }}
+            />
+
+            <Button
+              type="submit"
+              fullWidth
+              radius="xl"
+              style={{
+                backgroundColor: "#5f3dc4",
+                color: "white",
+                fontWeight: 600,
+              }}
+            >
+              Verify
+            </Button>
+          </Stack>
+        </form>
       </Card>
     </Box>
   );
